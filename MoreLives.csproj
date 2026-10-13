@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MoreLives</AssemblyName>
+    <Product>MoreLives</Product>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RootNamespace>MoreLives</RootNamespace>
+    <GameDir Condition="'$(GameDir)' == ''">/home/cj/.local/share/Steam/steamapps/common/Atomicrops</GameDir>
+    <GameManagedDir Condition="'$(GameManagedDir)' == '' And Exists('$(GameDir)/Atomicrops_Data/Managed')">$(GameDir)/Atomicrops_Data/Managed</GameManagedDir>
+    <GameManagedDir Condition="'$(GameManagedDir)' == ''">libs</GameManagedDir>
+    <BepInExCoreDir Condition="'$(BepInExCoreDir)' == '' And Exists('$(GameDir)/BepInEx/core')">$(GameDir)/BepInEx/core</BepInExCoreDir>
+    <BepInExCoreDir Condition="'$(BepInExCoreDir)' == ''">libs</BepInExCoreDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath Condition="Exists('$(BepInExCoreDir)/0Harmony.dll')">$(BepInExCoreDir)/0Harmony.dll</HintPath>
+      <HintPath Condition="!Exists('$(BepInExCoreDir)/0Harmony.dll')">libs/0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath Condition="Exists('$(BepInExCoreDir)/BepInEx.dll')">$(BepInExCoreDir)/BepInEx.dll</HintPath>
+      <HintPath Condition="!Exists('$(BepInExCoreDir)/BepInEx.dll')">libs/BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath Condition="Exists('$(GameManagedDir)/Assembly-CSharp.dll')">$(GameManagedDir)/Assembly-CSharp.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/Assembly-CSharp.dll')">libs/Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath Condition="Exists('$(GameManagedDir)/UnityEngine.dll')">$(GameManagedDir)/UnityEngine.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/UnityEngine.dll')">libs/UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath Condition="Exists('$(GameManagedDir)/UnityEngine.CoreModule.dll')">$(GameManagedDir)/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/UnityEngine.CoreModule.dll')">libs/UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath Condition="Exists('$(GameManagedDir)/UnityEngine.IMGUIModule.dll')">$(GameManagedDir)/UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/UnityEngine.IMGUIModule.dll')">libs/UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath Condition="Exists('$(GameManagedDir)/UnityEngine.TextRenderingModule.dll')">$(GameManagedDir)/UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/UnityEngine.TextRenderingModule.dll')">libs/UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath Condition="Exists('$(GameManagedDir)/UnityEngine.UI.dll')">$(GameManagedDir)/UnityEngine.UI.dll</HintPath>
+      <HintPath Condition="!Exists('$(GameManagedDir)/UnityEngine.UI.dll')">libs/UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="Exists('$(GameDir)/BepInEx/plugins')">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GameDir)/BepInEx/plugins" />
+    <Message Importance="High" Text="Copied $(TargetFileName) to $(GameDir)/BepInEx/plugins" />
+  </Target>
+
+</Project>
